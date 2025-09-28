@@ -55,6 +55,8 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/payment.
 # Install python dependencies
 run_cmd "Installing python dependencies" bash -c "cd /app && pip3 install -r requirements.txt"
 
+# Add cart payment service repo
+run_cmd "Adding payment service" cp payment.service /etc/systemd/system/payment.service
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 

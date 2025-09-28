@@ -59,7 +59,8 @@ run_cmd "Installing go get" bash -c "cd /app && go get"
 # Install go buildgit 
 run_cmd "Installing go build" bash -c "cd /app && go build"
 
-
+# Add dispatch
+run_cmd "Adding dispatch" cp dispatch.service /etc/systemd/system/dispatch.service
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 

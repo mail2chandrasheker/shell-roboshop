@@ -50,7 +50,7 @@ run_cmd "Enabling current nginx module" dnf module enable nginx:1.24 -y
 run_cmd "Installing Nginx" dnf install nginx -y
 
 # enable  Nginx service
-run_cmd "Enable Nginx Service" systemctl enable nginx
+run_cmd "enable  Nginx Service" dnf install nginx -y
 
 # Start  Nginx service
 run_cmd "Start Nginx Service" systemctl start nginx
@@ -62,7 +62,10 @@ run_cmd "Remove the default files" rm -rf /usr/share/nginx/html/*
 run_cmd "Downloading frontend application" curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
 
 # Extract application code
-run_cmd "Extracting application code" unzip -o /tmp/frontend.zip -d /usr/share/nginx/html
+run_cmd "Extracting application code" bash -c "cd /usr/share/nginx/html && unzip -o /tmp/frontend.zip"
+
+# Add nginx config
+run_cmd "Adding nginx conf" cp nginx.conf /etc/nginx/nginx.conf
 
 # Restart Nginx
 run_cmd "Restarting Nginx service" systemctl restart nginx 

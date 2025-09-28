@@ -50,7 +50,7 @@ run_cmd "Enabling current nginx module" dnf module enable nginx:1.24 -y
 run_cmd "Installing Nginx" dnf install nginx -y
 
 # enable  Nginx service
-run_cmd "enable  Nginx Service" dnf install nginx -y
+run_cmd "enable  Nginx Service" systemctl enable nginx
 
 # Start  Nginx service
 run_cmd "Start Nginx Service" systemctl start nginx

@@ -29,18 +29,24 @@ validate() {
     fi
 }
 
+run_cmd() {
+    desc=$1
+    shift
+    "$@" 2>&1 | tee -a $log_file
+    validate $? "$desc"
+}
+
 # Add MongoDB repo
-cp mongo.repo /etc/yum.repos.d/mongo.repo 2>&1 | tee -a $log_file
-validate $? "Adding MongoDB repo"
+run_cmd "Adding MongoDB repo" cp mongo.repo /etc/yum.repos.d/mongo.repo
 
 # Install MongoDB
-dnf install -y mongodb-org 2>&1 | tee -a $log_file
-validate $? "Installing MongoDB"
+run_cmd "Installing MongoDB" dnf install -y mongodb-org
 
 # Enable MongoDB
-systemctl enable mongod 2>&1 | tee -a $log_file
-validate $? "Enabling MongoDB service"
+run_cmd "Enabling MongoDB service" systemctl enable mongod
 
-# Start MongoDB
-systemctl start mongod 2>&1 | tee -a $log_file
-validate $? "Starting MongoDB service"
+# Update bindIp in config
+run_cmd "Updating bindIp in mongod.conf" sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf
+
+# Restart MongoDB
+run_cmd "Restarting MongoDB service" systemctl restart mongod

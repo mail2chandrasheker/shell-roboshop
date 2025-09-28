@@ -65,8 +65,8 @@ run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 
-#enable catalogue
-run_cmd "enable cart" systemctl enable cart  
+#enable cart service
+run_cmd "enable cart" systemctl enable cart 
 
-#start catalouge
-run_cmd "start catalouge" systemctl start cart
+#start cart service
+run_cmd "start cart" systemctl start cart

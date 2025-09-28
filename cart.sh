@@ -11,6 +11,7 @@ logs_folder="/var/log/shell-roboshop"
 script_name=$(basename $0 | cut -d "." -f1)
 log_file="$logs_folder/$script_name.log"
 mkdir -p $logs_folder
+SCRIPT_DIR=$PWD
 
 echo "Script started execution at: $(date)" | tee -a $log_file
 
@@ -47,8 +48,13 @@ run_cmd "Enabling current NodeJS module" dnf module enable nodejs:20 -y
 # Install NodeJS
 run_cmd "Installing NodeJS" dnf install nodejs -y
 
-# add application user
- run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+# Add application user
+id roboshop &>>$log_file
+if [ $? -ne 0 ]; then
+  run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+else
+  echo "User roboshop already exists .... Skipping" | tee -a $log_file
+fi
 
 # create/app directory
 run_cmd "Creating /app directory" mkdir -p /app
@@ -63,7 +69,7 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/cart.zip
 run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 
 # Add cart config repo
-run_cmd "Adding cart config repo" cp cart.service /etc/systemd/system/cart.service
+run_cmd "Adding cart config repo" cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
 #Daemon reload
 run_cmd "Daemon reload" systemctl daemon-reload
 

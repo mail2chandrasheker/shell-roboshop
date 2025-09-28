@@ -40,9 +40,13 @@ run_cmd() {
 # maven install
 run_cmd "maven install" dnf install maven -y
 
-# add application user
- run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-
+# Add application user
+id roboshop &>>$log_file
+if [ $? -ne 0 ]; then
+  run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+else
+  echo "User roboshop already exists .... Skipping" | tee -a $log_file
+fi
 # create/app directory
 run_cmd "Creating /app directory" mkdir -p /app
 
@@ -54,10 +58,10 @@ run_cmd "Downloading catalogue application" curl -L -o /tmp/shipping.zip https:/
 run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/shipping.zip"
 
 # maven clean package
-run_cmd "maven clean package" mvn clean package 
+run_cmd "maven clean package" bash -c "cd /app && mvn clean package"
 
 # maven target
-run_cmd "maven target" mv target/shipping-1.0.jar shipping.jar  
+run_cmd "maven target" bash -c "cd /app && mv target/shipping-1.0.jar shipping.jar" 
 
 # Add shipping.service
 run_cmd "shipping service " cp shipping.service /etc/systemd/system/shipping.service

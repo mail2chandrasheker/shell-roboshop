@@ -10,6 +10,7 @@ userid=$(id -u)
 logs_folder="/var/log/shell-roboshop"
 script_name=$(basename $0 | cut -d "." -f1)
 log_file="$logs_folder/$script_name.log"
+SCRIPT_DIR=$PWD
 
 mkdir -p $logs_folder
 
@@ -40,9 +41,13 @@ run_cmd() {
 # install python
 run_cmd "install python" dnf install python3 gcc python3-devel -y
 
-# add application user
- run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-
+# Add application user
+id roboshop &>>$log_file
+if [ $? -ne 0 ]; then
+  run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+else
+  echo "User roboshop already exists .... Skipping" | tee -a $log_file
+fi
 # create/app directory
 run_cmd "Creating /app directory" mkdir -p /app
 
@@ -56,7 +61,7 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/payment.
 run_cmd "Installing python dependencies" bash -c "cd /app && pip3 install -r requirements.txt"
 
 # Add cart payment service repo
-run_cmd "Adding payment service" cp payment.service /etc/systemd/system/payment.service
+run_cmd "Adding payment service" cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 

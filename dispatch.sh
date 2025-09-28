@@ -40,9 +40,13 @@ run_cmd() {
 # install GoLang
 run_cmd "Install GoLang" dnf install golang -y
 
-# add application user
- run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
-
+# Add application user
+id roboshop &>>$log_file
+if [ $? -ne 0 ]; then
+  run_cmd "Creating roboshop user" useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+else
+  echo "User roboshop already exists .... Skipping" | tee -a $log_file
+fi
 # create/app directory
 run_cmd "Creating /app directory" mkdir -p /app
 

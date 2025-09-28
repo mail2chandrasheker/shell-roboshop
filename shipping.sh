@@ -81,10 +81,10 @@ run_cmd "client side mysql install" dnf install mysql -y
 run_cmd "load the schema" mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql
 
 #MySQL expects a password authentication,
-run_cmd "MySQL expects a password authentication," mysql -h  $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
+run_cmd "MySQL expects a password authentication,"  mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
 
 #load the master
-run_cmd "load the master" mysql -h  $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql 
+run_cmd "load the master" mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql
 
 
 #restarting the shipping service

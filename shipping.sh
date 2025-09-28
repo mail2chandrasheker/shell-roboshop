@@ -12,6 +12,7 @@ script_name=$(basename $0 | cut -d "." -f1)
 log_file="$logs_folder/$script_name.log"
 MONGODB_HOST=mongodb.chandradevops.space
 MYSQL_HOST=mysql.chandradevops.space
+SCRIPT_DIR=$PWD
 mkdir -p $logs_folder
 
 echo "Script started execution at: $(date)" | tee -a $log_file
@@ -64,7 +65,7 @@ run_cmd "maven clean package" bash -c "cd /app && mvn clean package"
 run_cmd "maven target" bash -c "cd /app && mv target/shipping-1.0.jar shipping.jar" 
 
 # Add shipping.service
-run_cmd "shipping service " cp shipping.service /etc/systemd/system/shipping.service
+run_cmd "shipping service " cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 
 # reload
 run_cmd "daemon reload" systemctl daemon-reload

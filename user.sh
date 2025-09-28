@@ -63,6 +63,9 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/user.zip
 # Install NodeJS dependencies
 run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 
+
+# Add user service
+run_cmd "Adding user service" cp /etc/systemd/system/user.service
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 

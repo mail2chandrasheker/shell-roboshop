@@ -25,4 +25,6 @@ do
   --output text)
 
    fi
+
+   echo "$instnace: $ip"
 done

@@ -48,7 +48,8 @@ run_cmd "Enable rabbitmq service" systemctl enable rabbitmq-server
 run_cmd "start rabbitmq server" systemctl start rabbitmq-server
 
 # default rabbitmq user name
-run_cmd "default user name" rabbitmqctl add_user roboshop roboshop123
+#run_cmd "default user name" rabbitmqctl add_user roboshop roboshop123
+run_cmd "Adding roboshop user" bash -c 'rabbitmqctl list_users | grep -q roboshop || rabbitmqctl add_user roboshop roboshop123'#
 
 # default rabbitmq password
 run_cmd "default rabbitmq password" rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"

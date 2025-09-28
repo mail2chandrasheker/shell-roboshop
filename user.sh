@@ -36,11 +36,14 @@ run_cmd() {
     validate $? "$desc"
 }
 
-# List NodeJS modules
-run_cmd "Listing NodeJS modules" dnf module list nodejs
+# List  modules
+run_cmd "Listing modules" dnf module list
 
 # Disable current NodeJS module
 run_cmd "Disabling current NodeJS module" dnf module disable nodejs -y
+
+# Ensable current NodeJS module
+run_cmd "enabling current NodeJS module" dnf module enable nodejs:20 -y
 
 # Install NodeJS
 run_cmd "Installing NodeJS" dnf install nodejs -y
@@ -52,34 +55,19 @@ run_cmd "Installing NodeJS" dnf install nodejs -y
 run_cmd "Creating /app directory" mkdir -p /app
 
 #Download application code
-run_cmd "Downloading catalogue application" curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+run_cmd "Downloading catalogue application" curl -L -o /tmp/user.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
 
 # Extract application code
-run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/catalogue.zip"
+run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/user.zip"
 
 # Install NodeJS dependencies
 run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 
-# add catalogue service
-run_cmd "Adding catalogue service" cp catalogue.service /etc/systemd/system/catalogue.service
-
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload
 
-#enable catalogue
-run_cmd "enable catalougue" systemctl enable catalogue 
+#enable user service
+run_cmd "eanble user service" systemctl enable user 
 
-#start catalouge
-run_cmd "start catalouge" systemctl start catalogue
-
-# Add MongoDB repo
-run_cmd "Adding MongoDB repo" cp mongo.repo /etc/yum.repos.d/mongo.repo
-
-# Install MongoDB
-run_cmd "Installing MongoDB Client" dnf install mongodb-mongosh -y
-
-#load catalogue products
-run_cmd "Load catalogue products " mongosh --host $MONGODB_HOST </app/db/master-data.js
-
-# Restart Catalogue
-run_cmd "Restarting Catalogue service" systemctl restart catalogue
+#start user service
+run_cmd "start user service" systemctl start user

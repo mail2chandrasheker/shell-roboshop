@@ -37,7 +37,7 @@ run_cmd() {
 }
 
 # Add Rabbit  repo
-run_cmd "Adding Rabbitmq repo" cp $SCRIPT_DIR\rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+run_cmd "Adding Rabbitmq repo" cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
 
 # Install rabbit 
 run_cmd "Installing rabiitmq" dnf install rabbitmq-server -y

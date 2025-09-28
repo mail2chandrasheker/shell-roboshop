@@ -4,7 +4,7 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
-
+SCRIPT_DIR=$PWD
 userid=$(id -u)
 
 logs_folder="/var/log/shell-roboshop"
@@ -37,7 +37,7 @@ run_cmd() {
 }
 
 # Add Rabbit  repo
-run_cmd "Adding Rabbitmq repo" cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+run_cmd "Adding Rabbitmq repo" cp $SCRIPT_DIR\rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
 
 # Install rabbit 
 run_cmd "Installing rabiitmq" dnf install rabbitmq-server -y

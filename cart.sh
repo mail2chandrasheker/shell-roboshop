@@ -63,10 +63,10 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/cart.zip
 run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 
 #Daemon reload
-run_cmd "Daemon relaod" systemctl daemon-reload
+run_cmd "Daemon reload" systemctl daemon-reload
 
 #enable cart service
-run_cmd "enable cart" systemctl enable cart 
+run_cmd "Enable cart service" systemctl enable cart
 
 #start cart service
-run_cmd "start cart" systemctl start cart
+run_cmd "Start cart service" systemctl start cart

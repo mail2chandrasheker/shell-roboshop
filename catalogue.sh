@@ -61,7 +61,7 @@ run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/catalogu
 run_cmd "Installing NodeJS dependencies" bash -c "cd /app && npm install"
 
 # add catalogue service
-run_cmd "Adding catalogue service" cp /etc/systemd/system/catalogue.service
+run_cmd "Adding catalogue service" cp catalogue.service /etc/systemd/system/catalogue.service
 
 #Daemon reload
 run_cmd "Daemon relaod" systemctl daemon-reload

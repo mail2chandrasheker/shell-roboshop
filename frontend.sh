@@ -67,8 +67,12 @@ run_cmd "Extracting application code" bash -c "cd /usr/share/nginx/html && unzip
 # Add nginx config
 run_cmd "Adding nginx conf" cp nginx.conf /etc/nginx/nginx.conf
 
+run_cmd "Validate nginx config" nginx -t
+
 # Restart Nginx
 run_cmd "Restarting Nginx service" systemctl restart nginx 
+
+
 
 
 

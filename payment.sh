@@ -54,6 +54,9 @@ run_cmd "Creating /app directory" mkdir -p /app
 #Download application code
 run_cmd "Downloading catalogue application" curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip
 
+# RRemoving existing code
+run_cmd "Removing existing code"  rm -rf /app/*
+
 # Extract application code
 run_cmd "Extracting application code" bash -c "cd /app && unzip -o /tmp/payment.zip"
 
